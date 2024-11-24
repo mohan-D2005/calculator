@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <title>calculator</title>
+  <link rel="stylesheet" href="calculator_css.css" />
+  <script src="myscript.js"></script>
+  <body>
+    <div class="body">
+      <div id="display"></div>
+      <button onclick="appendNumber('1')">1</button>
+      <button onclick="appendNumber('2')">2</button>
+      <button onclick="appendNumber('3')">3</button>
+      <button onclick="performOperation('+')">+</button>
+      <button onclick="appendNumber('4')">4</button>
+      <button onclick="appendNumber('5')">5</button>
+      <button onclick="appendNumber('6')">6</button>
+      <button onclick="performOperation('-')">-</button>
+      <button onclick="appendNumber('7')">7</button>
+      <button onclick="appendNumber('8')">8</button>
+      <button onclick="appendNumber('9')">9</button>
+      <button onclick="performOperation('x')">x</button>
+      <button onclick="deleteLast()">C</button>
+      <button onclick="appendNumber('0')">0</button>
+      <button onclick="appendNumber('.')">.</button>
+      <button onclick="performOperation('/')">/</button>
+      <button class="AC" onclick="clearDisplay()">AC</button>
+      <button onclick="performOperation('%')">%</button>
+      <button class="equal" onclick="calculate()">=</button>
+
+      <script>
+        let currentInput = "";
+        let previousInput = "";
+        let operation = null;
+
+        function appendNumber(number) {
+          currentInput += number;
+          updateDisplay();
+        }
+
+        function performOperation(op) {
+          if (currentInput === "") return;
+          if (previousInput !== "") calculate();
+          operation = op;
+          currentInput += op;
+          previousInput = currentInput;
+          document.getElementById("display").innerHTML = previousInput;
+          currentInput = "";
+        }
+
+        function calculate() {
+          if (currentInput === "" || previousInput === "" || operation === null)
+            return;
+          let result;
+          const prev = parseFloat(previousInput);
+          const curr = parseFloat(currentInput);
+          switch (operation) {
+            case "+":
+              result = prev + curr;
+              break;
+            case "-":
+              result = prev - curr;
+              break;
+            case "x":
+              result = prev * curr;
+              break;
+            case "/":
+              result = prev / curr;
+              break;
+            case "%":
+              result = prev % curr;
+              break;
+            default:
+              return;
+          }
+          currentInput = result.toString();
+          operation = null;
+          previousInput = "";
+          updateDisplay();
+        }
+
+        function deleteLast() {
+          currentInput = currentInput.slice(0, -1);
+          updateDisplay();
+        }
+
+        function clearDisplay() {
+          currentInput = "";
+          previousInput = "";
+          operation = null;
+          updateDisplay();
+        }
+
+        function updateDisplay() {
+          document.getElementById("display").innerHTML = currentInput;
+        }
+      </script>
+    </div>
+  </body>
+</html>
